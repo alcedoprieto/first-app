@@ -1,53 +1,59 @@
-import React, {Component} from 'react';
-
-//import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Title from './components/title';
+import Input from './components/input';
+import TaskList from './components/task-list';
+import Layout from './components/layout';
 
 class App extends Component {
-   constructor(props) {
-      super(props)
-      this.state = {
-         newTask: "",
-         tasks:[]
-      }
-   }
+  constructor(props) {
+    super(props);
+    this.state = {
+      newTask: "",
+      tasks: []
+    };
+  }
 
-   handleTaskChange = (event) => {
-      this.setState({
-         newTask: event.target.value,
-      })
-    }
+  handleTaskChange = event => {
+    this.setState({
+      newTask: event.target.value
+    });
+  };
 
-   handleSubmit = (event) => {
-      event.preventDefault();
-      let newTasks = this.state.tasks;
-      newTasks.push(this.state.newTask)
-      this.setState({
-         newTask: "",
-         tasks: newTasks
-      })
-   }
+  handleSubmit = event => {
+    event.preventDefault();
+    let newTasks = this.state.tasks;
+    newTasks.push(this.state.newTask);
+    this.setState({
+      newTask: "",
+      tasks: newTasks
+    });
+  };
+
+  handleDelete = (id) => {
+    let newTasks = this.state.tasks;
+    newTasks.splice(id, 1)
+    this.setState({
+      tasks: newTasks,
+    })
+  }
 
   render() {
-     return (
-        <div className="container">
-           <h1 className="title">Lista de Tareas<span aria-label="emoji" role="img">🔥</span></h1>
-           <form onSubmit={this.handleSubmit}>
-               <input value={this.state.newTask} onChange={this.handleTaskChange} type="text" className="new-task"/>
-           </form>
-           <h2 className="test-label">{this.state.newTask}</h2>
-           {
-            this.state.tasks.map(task =>
-               <div className="task-container">
-                  <h3 className="task">{task}</h3>
-               </div>
-            )
-            }
-        </div>
-     );
+    return (
+      <Layout>
+        <Title/>
+        <Input 
+          handleSubmit={this.handleSubmit}
+          handleTaskChange={this.handleTaskChange}
+          value={this.state.newTask}
+        />
+        <TaskList 
+          tasks={this.state.tasks}
+          handleDelete={this.handleDelete}
+        />
+      </Layout>
+    );
   }
 }
-
-
 
 export default App;
